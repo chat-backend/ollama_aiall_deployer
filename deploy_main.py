@@ -1,9 +1,12 @@
 # deploy_main.py
 #!/usr/bin/env python3
 """
-AIALL Gateway – Cluster Deployer (Python V15)
-Tinh gọn – đồng bộ chuẩn Ollama Cloud Gateway.
-Nhiệm vụ: Triển khai hệ thống (deploy), không phải entrypoint chính.
+AIALL Gateway – Cluster Deployer (Python V15-FIXED)
+---------------------------------------------------
+Phiên bản đã chỉnh sửa theo đúng logic Ollama:
+- BASE_URL = https://api.aiallplatform.com
+- API phải đi qua prefix /ollama/
+- Không dùng /api/v12/... nữa
 """
 
 import argparse
@@ -85,10 +88,13 @@ def init_project_config() -> ProjectConfig:
 
     base_url = f"https://{DOMAINS[0]}"
 
-    api_generate = f"{base_url}/api/v12/chat/stream"
-    api_completion = f"{base_url}/api/v12/chat"
-    api_pull = f"{base_url}/api/v12/pull"
-    api_health = f"{base_url}/api/v12/health"
+    # ================================
+    #  API CHUẨN OLLAMA (ĐÃ SỬA)
+    # ================================
+    api_generate = f"{base_url}/ollama/api/generate"
+    api_completion = f"{base_url}/ollama/api/generate"
+    api_pull = f"{base_url}/ollama/api/pull"
+    api_health = f"{base_url}/ollama/api/health"
 
     backup_project_config()
 
@@ -196,23 +202,15 @@ def print_api_info(cfg: ProjectConfig) -> None:
     log("[INFO] Test your API (stream):")
     log(
         f"curl -X POST {cfg.api_generate} "
-        f"-H \"Authorization: Bearer {cfg.api_key}\" "
+        f"-H \"x-api-key: {cfg.api_key}\" "
         f"-H \"Content-Type: application/json\" "
         f"-d '{{\"model\":\"llama3:latest\",\"prompt\":\"hello\",\"stream\":true}}'"
-    )
-
-    log("[INFO] Test your API (non-stream):")
-    log(
-        f"curl -X POST {cfg.api_completion} "
-        f"-H \"Authorization: Bearer {cfg.api_key}\" "
-        f"-H \"Content-Type: application/json\" "
-        f"-d '{{\"model\":\"llama3:latest\",\"prompt\":\"hello\",\"stream\":false}}'"
     )
 
     log("[INFO] Test your API (pull model):")
     log(
         f"curl -X POST {cfg.api_pull} "
-        f"-H \"Authorization: Bearer {cfg.api_key}\" "
+        f"-H \"x-api-key: {cfg.api_key}\" "
         f"-H \"Content-Type: application/json\" "
         f"-d '{{\"model\":\"llama3:latest\"}}'"
     )
@@ -220,8 +218,9 @@ def print_api_info(cfg: ProjectConfig) -> None:
     log("[INFO] Test your API (health):")
     log(
         f"curl -X GET {cfg.api_health} "
-        f"-H \"Authorization: Bearer {cfg.api_key}\""
+        f"-H \"x-api-key: {cfg.api_key}\""
     )
+
 
 # ============================================================
 #  FULL DEPLOY
@@ -334,5 +333,7 @@ def main() -> None:
     else:
         parser.print_help()
 
+
 if __name__ == "__main__":
     main()
+
