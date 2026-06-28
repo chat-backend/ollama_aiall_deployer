@@ -23,10 +23,10 @@ pyjwt==2.8.0                # JWT handling for API auth
 # ================================
 #  Async / Performance (optional)
 # ================================
-gevent==24.2.1              # Optional: for other async tasks if needed
+gevent==24.2.1              # Optional: async worker class for background tasks
 greenlet==3.0.3
 
 # ================================
 #  Utilities
 # ================================
-psutil==6.0.0               # System monitoring (CPU, RAM) if app needs
+psutil==6.0.0               # System monitoring (CPU, RAM)
