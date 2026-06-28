@@ -1,18 +1,25 @@
 # main.py — FastAPI version (final)
 
+#!/usr/bin/env python3
+"""
+Ollama PRO+ Gateway – System Service (Minimal Version)
+------------------------------------------------------
+Phiên bản này KHÔNG xử lý API chính.
+API chính chạy qua Nginx → Ollama backend.
+FastAPI chỉ cung cấp thông tin hệ thống (tùy chọn).
+"""
+
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 import uvicorn
 
 from config_loader import load_runtime_config
-import core.deploy_app as deploy
 
 # Load config
 cfg = load_runtime_config()
 
 # Create FastAPI app
 app = FastAPI(
-    title="Ollama PRO+ Gateway",
+    title="Ollama PRO+ System Service",
     version="1.0.0",
 )
 
@@ -22,38 +29,26 @@ app = FastAPI(
 @app.get("/")
 def index():
     return {
+        "service": "Ollama PRO+ System Service",
         "status": "running",
+        "note": "API chính chạy qua /ollama/api/... (Nginx → Ollama)",
         "base_url": cfg.base_url
     }
 
 # ============================
-#  HEALTH CHECK
+#  HEALTH CHECK (SYSTEM ONLY)
 # ============================
-@app.get("/health")
-def health():
+@app.get("/system/health")
+def system_health():
     return {"status": "ok"}
-
-# ============================
-#  DEPLOY ENDPOINT
-# ============================
-@app.get("/deploy")
-def deploy_now():
-    deploy.full_deploy()
-    return {"status": "deploy completed"}
-
-# ============================
-#  INFO ENDPOINT
-# ============================
-@app.get("/api/v1/info")
-def info():
-    return {
-        "service": "Ollama Gateway",
-        "version": "1.0.0",
-        "base_url": cfg.base_url
-    }
 
 # ============================
 #  UVICORN ENTRY POINT
 # ============================
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=6001,
+        reload=False
+    )
