@@ -1,20 +1,14 @@
 # ================================
 #  Core Dependencies
 # ================================
-python-dotenv==1.0.1        # Optional: load .env for app layer
-requests==2.32.3            # HTTP client for calling internal/external APIs
+python-dotenv==1.0.1        # Load .env for app config
+requests==2.32.3            # HTTP client for internal/external APIs
 
 # ================================
-#  Web Framework
+#  Web Framework (FastAPI stack)
 # ================================
-flask==3.0.3                # Lightweight web framework for API Gateway
-gunicorn==22.0.0            # Production WSGI server (run behind Nginx)
-
-# Flask internal deps (explicit pinning for stability)
-Werkzeug==3.0.3
-Jinja2==3.1.4
-itsdangerous==2.2.0
-click==8.1.7
+fastapi==0.111.0            # Main API framework
+uvicorn[standard]==0.30.0   # ASGI server (run behind Nginx)
 
 # ================================
 #  JSON / Serialization
@@ -24,12 +18,12 @@ ujson==5.10.0               # Faster JSON parsing (optional but recommended)
 # ================================
 #  Security / Tokens
 # ================================
-pyjwt==2.8.0                # JWT handling if needed for API auth
+pyjwt==2.8.0                # JWT handling for API auth
 
 # ================================
 #  Async / Performance (optional)
 # ================================
-gevent==24.2.1              # Optional: async worker class for Gunicorn
+gevent==24.2.1              # Optional: for other async tasks if needed
 greenlet==3.0.3
 
 # ================================
