@@ -193,6 +193,35 @@ def print_api_info(cfg: ProjectConfig) -> None:
     log(f"  API_KEY        : {cfg.api_key}")
     log(f"  TOKEN_SECRET   : {cfg.token_secret}")
 
+    log("[INFO] Test your API (stream):")
+    log(
+        f"curl -X POST {cfg.api_generate} "
+        f"-H \"Authorization: Bearer {cfg.api_key}\" "
+        f"-H \"Content-Type: application/json\" "
+        f"-d '{{\"model\":\"llama3:latest\",\"prompt\":\"hello\",\"stream\":true}}'"
+    )
+
+    log("[INFO] Test your API (non-stream):")
+    log(
+        f"curl -X POST {cfg.api_completion} "
+        f"-H \"Authorization: Bearer {cfg.api_key}\" "
+        f"-H \"Content-Type: application/json\" "
+        f"-d '{{\"model\":\"llama3:latest\",\"prompt\":\"hello\",\"stream\":false}}'"
+    )
+
+    log("[INFO] Test your API (pull model):")
+    log(
+        f"curl -X POST {cfg.api_pull} "
+        f"-H \"Authorization: Bearer {cfg.api_key}\" "
+        f"-H \"Content-Type: application/json\" "
+        f"-d '{{\"model\":\"llama3:latest\"}}'"
+    )
+
+    log("[INFO] Test your API (health):")
+    log(
+        f"curl -X GET {cfg.api_health} "
+        f"-H \"Authorization: Bearer {cfg.api_key}\""
+    )
 
 # ============================================================
 #  FULL DEPLOY
