@@ -204,7 +204,7 @@ def print_api_info(cfg: ProjectConfig) -> None:
         f"curl -X POST {cfg.api_generate} "
         f"-H \"x-api-key: {cfg.api_key}\" "
         f"-H \"Content-Type: application/json\" "
-        f"-d '{{\"model\":\"llama3:latest\",\"prompt\":\"hello\",\"stream\":true}}'"
+        f"-d '{{\"model\":\"qwen2.5:3b\",\"prompt\":\"hello\",\"stream\":true}}'"
     )
 
     log("[INFO] Test your API (pull model):")
@@ -212,7 +212,7 @@ def print_api_info(cfg: ProjectConfig) -> None:
         f"curl -X POST {cfg.api_pull} "
         f"-H \"x-api-key: {cfg.api_key}\" "
         f"-H \"Content-Type: application/json\" "
-        f"-d '{{\"model\":\"llama3:latest\"}}'"
+        f"-d '{{\"model\":\"qwen2.5:3b\"}}'"
     )
 
     log("[INFO] Test your API (health):")
